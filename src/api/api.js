@@ -37,7 +37,7 @@ export async function getJobById(id) {
       let data = await response.json();
       return data;
     } else {
-      let error = await response.json();
+      let error = response;
       return error;
     }
   } catch (error) {

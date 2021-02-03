@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Card, Spinner } from "react-bootstrap";
+import { connect } from "react-redux";
 import { getJobById } from "../api/api";
 
-export default class JobDetails extends Component {
+const mapStateToProps = (state) => state;
+
+class JobDetails extends Component {
   state = { job: null };
   componentDidMount() {
     this.fetchJob();
@@ -18,7 +21,14 @@ export default class JobDetails extends Component {
         {this.state.job ? (
           <>
             <Card>
-              <Card.Header>{this.state.job.title}</Card.Header>
+              <Card.Header>
+                <img
+                  src={this.state.job.company_logo}
+                  alt="company logo"
+                  className="companyLogo"
+                ></img>
+                {this.state.job.title}
+              </Card.Header>
               <Card.Body>
                 <blockquote className="blockquote mb-0">
                   <p>Type: {this.state.job.type}</p>
@@ -69,3 +79,5 @@ export default class JobDetails extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(JobDetails);
