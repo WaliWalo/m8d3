@@ -53,29 +53,30 @@ class SearchForm extends Component {
           <Button variant="outline-success" type="submit">
             Search
           </Button>
-        </Form>
-        <div>
-          {this.props.user && this.props.user.username ? (
-            <>
-              <span className="mr-2" style={{ color: "white" }}>
-                Welcome, <strong>{this.props.user.username}</strong>
-              </span>
+          <div style={{ marginLeft: "auto" }}>
+            {this.props.user && this.props.user.username ? (
+              <>
+                <span className="mr-2" style={{ color: "white" }}>
+                  Welcome, <strong>{this.props.user.username}</strong>
+                </span>
+                <Button
+                  color="primary"
+                  onClick={() => this.props.history.push("/favourites")}
+                >
+                  Favourites ({this.props.favourites.length})
+                </Button>
+              </>
+            ) : (
               <Button
                 color="primary"
-                onClick={() => this.props.history.push("/favourites")}
+                onClick={() => this.setState({ showModal: true })}
               >
-                Favourites ({this.props.favourites.length})
+                Login
               </Button>
-            </>
-          ) : (
-            <Button
-              color="primary"
-              onClick={() => this.setState({ showModal: true })}
-            >
-              Login
-            </Button>
-          )}
-        </div>
+            )}
+          </div>
+        </Form>
+
         <Modal show={this.state.showModal} onHide={this.toggleModal}>
           <Modal.Header closeButton>
             <Modal.Title>Create account</Modal.Title>
