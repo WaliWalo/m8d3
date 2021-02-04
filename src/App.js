@@ -11,6 +11,44 @@ import { connect } from "react-redux";
 
 const mapStateToProps = (state) => state;
 
+const mapDispatchToProps = (dispatch) => ({
+  getResults: (form = null) =>
+    dispatch(async (dispatch) => {
+      let jobs = [];
+      if (form) {
+        jobs = await getJobs(form.location, form.position, form.full_time);
+        if (jobs.hasOwnProperty("ok")) {
+          console.log(jobs);
+          const errorMsg = jobs.status + jobs.statusText;
+          dispatch({
+            type: "ADD_TO_ERRORS",
+            payload: errorMsg,
+          });
+        } else {
+          dispatch({
+            type: "ADD_TO_RESULTS",
+            payload: jobs,
+          });
+        }
+      } else {
+        jobs = await getJobs();
+        if (jobs.hasOwnProperty("ok")) {
+          console.log(jobs);
+          const errorMsg = jobs.status + jobs.statusText;
+          dispatch({
+            type: "ADD_TO_ERRORS",
+            payload: errorMsg,
+          });
+        } else {
+          dispatch({
+            type: "ADD_TO_RESULTS",
+            payload: jobs,
+          });
+        }
+      }
+    }),
+});
+
 function App(props) {
   const [results, setResults] = useState([]);
   const [form, setForm] = useState({
@@ -23,7 +61,8 @@ function App(props) {
   const toggleShowToast = () => setShowToast(!showToast);
 
   useEffect(() => {
-    fetchResults();
+    // fetchResults();
+    props.getResults();
   }, []);
 
   useEffect(() => {
@@ -51,7 +90,8 @@ function App(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    fetchResults(form);
+    // fetchResults(form);
+    props.getResults(form);
     setForm({
       full_time: false,
       position: "",
@@ -96,11 +136,7 @@ function App(props) {
             form={form}
             formChangeHandler={formChangeHandler}
           />
-          <Route
-            path="/"
-            exact
-            render={(props) => <SearchResults results={results} />}
-          />
+          <Route path="/" exact render={(props) => <SearchResults />} />
           <Route path="/jobDetails" exact render={(props) => <JobDetails />} />
           <Route path="/favourites" exact render={(props) => <Favourites />} />
         </Container>
@@ -109,4 +145,4 @@ function App(props) {
   );
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

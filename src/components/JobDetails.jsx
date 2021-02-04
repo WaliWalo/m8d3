@@ -5,6 +5,15 @@ import { getJobById } from "../api/api";
 
 const mapStateToProps = (state) => state;
 
+// const mapDispatchToProps = (dispatch) => ({
+//   getJob: () =>
+//     dispatch(async (dispatch, getState) => {
+//       console.log(getState().selectedJob);
+//       let job = await getJobById(getState().selectedJob);
+//       this.setState({ job });
+//     }),
+// });
+
 class JobDetails extends Component {
   state = { job: null };
   componentDidMount() {

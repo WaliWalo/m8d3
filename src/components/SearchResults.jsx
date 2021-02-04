@@ -145,6 +145,9 @@ class SearchResults extends Component {
             <span className="sr-only">Loading...</span>
           </Spinner>
         )}
+        {this.props.results.length === 0 && (
+          <div style={{ color: "white" }}>No Results</div>
+        )}
       </div>
     );
   }
